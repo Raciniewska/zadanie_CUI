@@ -123,8 +123,17 @@ public class Zadanie_CUI {
                     Object data = parser.parse(json);
                     JSONObject JSONData = (JSONObject) data;
                     JSONArray array = (JSONArray) JSONData.get("rates");
-                    System.out.println("Dzień       Cena Kupna   Cena Sprzedazy\n");
-                    array.forEach(emp -> parseRateObject((JSONObject) emp));
+                    System.out.println("Dzień       Cena Kupna   Cena Sprzedazy   Różnica Kupna   Różnica Sprzedaży");
+                    df.setMinimumFractionDigits(4);
+                    for (int i = 0; i < array.size(); i++) {
+                        parseRateObject((JSONObject) array.get(i));
+                        if (i == 0) {
+                            System.out.println("-               -");
+                        } else {
+                            printBuyDiff((JSONObject) array.get(i - 1), (JSONObject) array.get(i));
+                            printSellDiff((JSONObject) array.get(i - 1), (JSONObject) array.get(i));
+                        }
+                    }
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -141,12 +150,23 @@ public class Zadanie_CUI {
     }
 
     private static void parseRateObject(JSONObject rate) {
-        df.setMinimumFractionDigits(4);
         String effectiveDate = (String) rate.get("effectiveDate");
         System.out.print(effectiveDate + "  ");
         Double bid = (Double) rate.get("bid");
         System.out.print(df.format(bid) + "       ");
         Double ask = (Double) rate.get("ask");
-        System.out.print(df.format(ask) + "\n");
+        System.out.print(df.format(ask) + "           ");
+    }
+
+    private static void printBuyDiff(JSONObject rate1, JSONObject rate2) {
+        Double bid1 = (Double) rate1.get("bid");
+        Double bid2 = (Double) rate2.get("bid");
+        System.out.print(df.format(bid2 - bid1) + "          ");
+    }
+
+    private static void printSellDiff(JSONObject rate1, JSONObject rate2) {
+        Double ask1 = (Double) rate1.get("ask");
+        Double ask2 = (Double) rate2.get("ask");
+        System.out.println(df.format(ask2 - ask1));
     }
 }
