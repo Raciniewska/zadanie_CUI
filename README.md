@@ -1,5 +1,5 @@
 # zadanie_CUI
-Program, który będzie pobierał i przetwarzał dane z usługi
+Program, który będzie pobiera i przetwarza dane z usługi
 sieciowej (ang. web-service) w formacie JSON.
 Dokumentacja usługi sieciowej znajduje się na http://api.nbp.pl/en.html. 
 Program przedstawia notowania kursu kupna i sprzedaży USD od
